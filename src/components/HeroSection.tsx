@@ -144,7 +144,11 @@ export default function HeroSection() {
                     '--bottle-color': flavour.color,
                     zIndex: 20 - distance,
                   } as React.CSSProperties}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() =>
+                    setActiveIndex((current) =>
+                      index === current ? (current + 1) % flavours.length : index
+                    )
+                  }
                   aria-label={`Feature ${flavour.name} flavour`}
                   aria-pressed={slot === 0}
                 >

@@ -105,6 +105,19 @@ export default function FestivalSection() {
     })
   }, [])
 
+  const scrollByDir = (dir: 1 | -1) => {
+    const el = trackRef.current
+    if (!el) return
+    const card = el.querySelector('.festival-card') as HTMLElement | null
+    const step = card ? card.offsetWidth + 24 : el.clientWidth * 0.8
+    el.scrollBy({ left: dir * step, behavior: 'smooth' })
+  }
+
+  const onTrackKey = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); scrollByDir(1) }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); scrollByDir(-1) }
+  }
+
   return (
     <section
       id="festival"
@@ -153,6 +166,10 @@ export default function FestivalSection() {
       {/* Horizontal scroll track */}
       <div
         ref={trackRef}
+        tabIndex={0}
+        onKeyDown={onTrackKey}
+        role="region"
+        aria-label="Festival cards — use arrow keys to navigate"
         style={{
           display: 'flex',
           gap: '1.5rem',
@@ -161,6 +178,7 @@ export default function FestivalSection() {
           paddingBottom: '1rem',
           scrollSnapType: 'x mandatory',
           WebkitOverflowScrolling: 'touch',
+          outline: 'none',
           scrollbarWidth: 'none',
         }}
       >
@@ -282,20 +300,42 @@ export default function FestivalSection() {
         ))}
       </div>
 
-      {/* Scroll hint */}
+      {/* Arrow controls + hint */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '0.75rem',
+        gap: '1rem',
         marginTop: '2rem',
         paddingRight: '5vw',
-        color: 'rgba(255,255,255,0.25)',
-        fontSize: '0.75rem',
-        letterSpacing: '0.15em',
       }}>
-        <div style={{ width: 24, height: 1, background: 'rgba(255,255,255,0.2)' }} />
-        SWIPE TO EXPLORE
-        <div style={{ width: 24, height: 1, background: 'rgba(255,255,255,0.2)' }} />
+        {([['‹', -1], ['›', 1]] as const).map(([glyph, dir]) => (
+          <button
+            key={dir}
+            onClick={() => scrollByDir(dir)}
+            aria-label={dir === 1 ? 'Next festival' : 'Previous festival'}
+            style={{
+              width: 46, height: 46, borderRadius: '50%',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(212,175,55,0.35)',
+              color: '#d4af37', fontSize: '1.5rem', lineHeight: 1,
+              cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              transition: 'background 0.2s, border-color 0.2s, transform 0.15s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(212,175,55,0.12)'; e.currentTarget.style.borderColor = 'rgba(212,175,55,0.7)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(212,175,55,0.35)' }}
+            onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.92)')}
+            onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+          >
+            {glyph}
+          </button>
+        ))}
+        <span style={{
+          display: 'flex', alignItems: 'center', gap: '0.75rem',
+          color: 'rgba(255,255,255,0.25)', fontSize: '0.75rem', letterSpacing: '0.15em',
+        }}>
+          <span style={{ width: 24, height: 1, background: 'rgba(255,255,255,0.2)' }} />
+          SWIPE OR USE ARROWS
+        </span>
       </div>
     </section>
   )

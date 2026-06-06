@@ -31,9 +31,21 @@ export default function Navigation() {
     return () => window.clearInterval(interval)
   }, [])
 
+  // Deep link: scroll to the section in the URL hash on first load
+  useEffect(() => {
+    const id = window.location.hash.replace('#', '')
+    if (!id) return
+    const el = document.getElementById(id)
+    if (el) window.setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 350)
+  }, [])
+
   const scrollTo = (id: string) => {
     setOpen(false)
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+    const el = document.getElementById(id)
+    if (!el) return
+    el.scrollIntoView({ behavior: 'smooth' })
+    // Put the section in the URL so it's shareable, without a jump
+    window.history.replaceState(null, '', `#${id}`)
   }
 
   return (

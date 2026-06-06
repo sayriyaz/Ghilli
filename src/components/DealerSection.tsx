@@ -8,10 +8,17 @@ const EMAILJS_SERVICE  = 'service_9sdqmlf'
 const EMAILJS_TEMPLATE = 'template_bl5apym'
 const EMAILJS_KEY      = 'WzEDAuDfduQPR8lYj'
 
+// All 38 districts of Tamil Nadu
 const cities = [
-  'Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy',
-  'Bangalore', 'Hyderabad', 'Mumbai', 'Delhi', 'Kolkata',
-  'Pune', 'Kochi', 'Vijayawada', 'Other',
+  'Ariyalur', 'Chengalpattu', 'Chennai', 'Coimbatore', 'Cuddalore',
+  'Dharmapuri', 'Dindigul', 'Erode', 'Kallakurichi', 'Kancheepuram',
+  'Kanyakumari', 'Karur', 'Krishnagiri', 'Madurai', 'Mayiladuthurai',
+  'Nagapattinam', 'Namakkal', 'Nilgiris', 'Perambalur', 'Pudukkottai',
+  'Ramanathapuram', 'Ranipet', 'Salem', 'Sivaganga', 'Tenkasi',
+  'Thanjavur', 'Theni', 'Thoothukudi', 'Tiruchirappalli', 'Tirunelveli',
+  'Tirupathur', 'Tiruppur', 'Tiruvallur', 'Tiruvannamalai', 'Tiruvarur',
+  'Vellore', 'Viluppuram', 'Virudhunagar',
+  'Other (outside Tamil Nadu)',
 ]
 
 const perks = [
@@ -29,6 +36,8 @@ export default function DealerSection() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [form, setForm] = useState({ name: '', phone: '', city: '', business: '' })
+  const [customCity, setCustomCity] = useState('')
+  const isOther = form.city === 'Other (outside Tamil Nadu)'
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
@@ -48,6 +57,7 @@ export default function DealerSection() {
     e.preventDefault()
     setLoading(true)
     setError('')
+    const location = isOther ? (customCity.trim() || 'Outside Tamil Nadu') : form.city
     try {
       await emailjs.send(
         EMAILJS_SERVICE,
@@ -56,7 +66,7 @@ export default function DealerSection() {
           title:   '🥤 Ghilli Dealer Enquiry',
           name:    form.name,
           time:    form.phone,
-          message: `Business: ${form.business || '—'} | City: ${form.city}`,
+          message: `Business: ${form.business || '—'} | Location: ${location}`,
           email:   '',
         },
         EMAILJS_KEY
@@ -240,7 +250,7 @@ export default function DealerSection() {
 
                 <div>
                   <label style={{ display: 'block', fontSize: '0.8rem', color: 'rgba(255,255,255,0.55)', marginBottom: '0.5rem', letterSpacing: '0.05em' }}>
-                    City
+                    District / Location
                   </label>
                   <select
                     required
@@ -258,9 +268,34 @@ export default function DealerSection() {
                       cursor: 'pointer',
                     }}
                   >
-                    <option value="" disabled>Select your city</option>
+                    <option value="" disabled>Select your district</option>
                     {cities.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
+
+                  {/* Custom location field when "Other" picked (e.g. Bangalore, Dubai) */}
+                  {isOther && (
+                    <input
+                      required
+                      type="text"
+                      placeholder="Type your city / country (e.g. Dubai)"
+                      value={customCity}
+                      onChange={(e) => setCustomCity(e.target.value)}
+                      style={{
+                        width: '100%',
+                        marginTop: '0.75rem',
+                        padding: '0.75rem 1rem',
+                        borderRadius: '10px',
+                        background: 'rgba(255,255,255,0.06)',
+                        border: '1px solid rgba(212,175,55,0.4)',
+                        color: 'white',
+                        fontSize: '0.95rem',
+                        outline: 'none',
+                        transition: 'border-color 0.2s',
+                      }}
+                      onFocus={(e) => (e.target.style.borderColor = 'rgba(212,175,55,0.7)')}
+                      onBlur={(e) => (e.target.style.borderColor = 'rgba(212,175,55,0.4)')}
+                    />
+                  )}
                 </div>
 
                 <button
