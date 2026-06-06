@@ -7,10 +7,36 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://ghilligolisoda.vercel.app";
+const TITLE = "Ghilli – Refreshing in Every Sip";
+const DESCRIPTION = "The Indian Goli Soda, Reimagined. 8 bold flavours. Premium craft soda with authentic Indian soul.";
+
 export const metadata: Metadata = {
-  title: "Ghilli – Refreshing in Every Sip",
-  description: "The Indian Goli Soda, Reimagined. 8 bold flavours. Premium craft soda with authentic Indian soul.",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: ["Ghilli", "goli soda", "Indian soda", "banta", "craft soda", "premium beverages"],
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: "Ghilli Goli Soda",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Ghilli Goli Soda — all 8 flavours",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({
