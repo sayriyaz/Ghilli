@@ -38,6 +38,7 @@ Ghilli runs a dealer and distributor program across Tamil Nadu and beyond — ex
 ## Links
 
 - Website: https://ghilligolisoda.com
+- Full reference for AI: https://ghilligolisoda.com/llms-full.txt
 - Instagram: https://www.instagram.com/iamgillisoda/
 - Facebook: https://www.facebook.com/iamgillisoda
 
