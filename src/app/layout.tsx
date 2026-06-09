@@ -111,6 +111,63 @@ const jsonLd = {
       publisher: { "@id": `${SITE_URL}/#organization` },
       inLanguage: "en-IN",
     },
+    {
+      "@type": "ItemList",
+      "@id": `${SITE_URL}/#flavours`,
+      name: "Ghilli Goli Soda Flavours",
+      numberOfItems: 8,
+      itemListElement: [
+        ["Blueberry", "The bestselling original. Bold, crisp, iconic."],
+        ["Cola", "Deep, dark fizz with maximum punch."],
+        ["Green Apple", "Crisp green apple kick."],
+        ["Lemon Mint", "Sharp citrus with mint. Summer refreshment."],
+        ["Orange", "Sunny, tropical orange burst."],
+        ["Paneer", "The classic Indian paneer/rose soda. Clear and crisp."],
+        ["Pineapple", "Sweet, fizzy tropical pineapple."],
+        ["Strawberry", "Sweet berry crowd-favourite."],
+      ].map(([name, desc], i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "Product",
+          name: `Ghilli Goli Soda — ${name}`,
+          description: desc,
+          brand: { "@id": `${SITE_URL}/#brand` },
+          category: "Carbonated soft drink",
+          manufacturer: { "@id": `${SITE_URL}/#organization` },
+        },
+      })),
+    },
+    {
+      "@type": "FAQPage",
+      "@id": `${SITE_URL}/#faq`,
+      mainEntity: [
+        [
+          "What is Ghilli Goli Soda?",
+          "Ghilli Goli Soda is an Indian marble-bottle (goli / codd-neck) carbonated soft drink brand, reimagined as a premium craft soda. It is made in Pudukkottai, Tamil Nadu by Oasis Food & Beverages and comes in 8 flavours.",
+        ],
+        [
+          "How many flavours does Ghilli have?",
+          "8 flavours: Blueberry, Cola, Green Apple, Lemon Mint, Orange, Paneer, Pineapple, and Strawberry.",
+        ],
+        [
+          "Who manufactures Ghilli Goli Soda?",
+          "Oasis Food & Beverages, located in Pudukkottai, Tamil Nadu, India.",
+        ],
+        [
+          "How do I become a Ghilli dealer or distributor?",
+          "Submit the dealer enquiry form at https://ghilligolisoda.com or call +91 99449 19449 or +91 93444 19991. Enquiries are accepted from all 38 districts of Tamil Nadu and other locations including other Indian states and abroad.",
+        ],
+        [
+          "What is goli soda?",
+          "Goli soda (also called banta or marble soda) is a traditional Indian carbonated drink sealed with a glass marble in a codd-neck bottle. You push the marble in to 'pop' the bottle and release the fizz.",
+        ],
+      ].map(([q, a]) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: { "@type": "Answer", text: a },
+      })),
+    },
   ],
 };
 
