@@ -128,13 +128,11 @@ const jsonLd = {
       ].map(([name, desc], i) => ({
         "@type": "ListItem",
         position: i + 1,
+        name: `Ghilli Goli Soda — ${name}`,
         item: {
-          "@type": "Product",
+          "@type": "Thing",
           name: `Ghilli Goli Soda — ${name}`,
           description: desc,
-          brand: { "@id": `${SITE_URL}/#brand` },
-          category: "Carbonated soft drink",
-          manufacturer: { "@id": `${SITE_URL}/#organization` },
         },
       })),
     },
