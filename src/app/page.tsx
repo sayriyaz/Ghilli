@@ -5,6 +5,7 @@ import FlavoursSection from '@/components/FlavoursSection'
 import GoliPopSection from '@/components/GoliPopSection'
 import BottleFlipSection from '@/components/BottleFlipSection'
 import FestivalSection from '@/components/FestivalSection'
+import FAQSection from '@/components/FAQSection'
 import DealerSection from '@/components/DealerSection'
 import Footer from '@/components/Footer'
 
@@ -19,6 +20,7 @@ export default function Home() {
         <GoliPopSection />
         <BottleFlipSection />
         <FestivalSection />
+        <FAQSection />
         <DealerSection />
       </main>
       <Footer />
