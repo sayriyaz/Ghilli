@@ -88,6 +88,34 @@ button {
   50% { transform: rotate(-14deg) translateY(-10px); }
 }
 
+@keyframes four-oh-four-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -22px; }
+}
+
+/* Floating bottles drift by default, jiggle when poked */
+.floater-404 {
+  animation-name: four-oh-four-float;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transition: opacity 0.2s ease, filter 0.2s ease;
+}
+.floater-404:hover {
+  opacity: 1;
+  filter: drop-shadow(0 16px 30px rgba(212, 175, 55, 0.4));
+  animation-name: four-oh-four-jiggle;
+  animation-duration: 0.45s !important;
+  animation-delay: 0s !important;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes four-oh-four-jiggle {
+  0%, 100% { transform: rotate(var(--rot, 0deg)); }
+  20% { transform: rotate(calc(var(--rot, 0deg) - 12deg)) scale(1.12); }
+  45% { transform: rotate(calc(var(--rot, 0deg) + 10deg)) scale(1.12); }
+  70% { transform: rotate(calc(var(--rot, 0deg) - 6deg)) scale(1.08); }
+}
+
 .gradient-gold {
   background: linear-gradient(135deg, #d4af37 0%, #f0d060 40%, #c8960c 70%, #f0d060 100%);
   background-size: 200% auto;

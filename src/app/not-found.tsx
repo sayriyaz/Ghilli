@@ -7,17 +7,30 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 }
 
-// Stable bubble positions (no hydration mismatch)
-const BUBBLES = Array.from({ length: 16 }, (_, i) => {
+// Stable bubble positions (no hydration mismatch) — lots of fizz
+const BUBBLE_TINTS = ['136,170,255', '68,221,102', '255,134,28', '255,68,102', '246,189,24', '222,219,53']
+const BUBBLES = Array.from({ length: 40 }, (_, i) => {
   const s = Math.sin(i * 99.7 + 12.3) * 43758.5
   const r = (n: number) => Math.abs(Math.sin(s + n))
   return {
     left: Math.round(r(1) * 100),
-    size: 6 + Math.round(r(2) * 16),
-    delay: (r(3) * 5).toFixed(2),
-    dur: (5 + r(4) * 5).toFixed(2),
+    size: 5 + Math.round(r(2) * 18),
+    delay: (r(3) * 6).toFixed(2),
+    dur: (4 + r(4) * 5).toFixed(2),
+    tint: BUBBLE_TINTS[Math.floor(r(5) * BUBBLE_TINTS.length)],
   }
 })
+
+// Small flavour bottles drifting around the page
+const FLOATERS = [
+  { img: 'cola_bottle.png', top: 14, left: 12, size: 78, rot: -22, dur: 6.5, delay: 0 },
+  { img: 'orange_bottle.png', top: 22, left: 82, size: 70, rot: 18, dur: 7.5, delay: 0.6 },
+  { img: 'green_apple_bottle.png', top: 58, left: 8, size: 64, rot: 14, dur: 8, delay: 1.1 },
+  { img: 'strawberry_bottle.png', top: 64, left: 86, size: 82, rot: -16, dur: 6.8, delay: 0.3 },
+  { img: 'lemon_bottle.png', top: 40, left: 90, size: 56, rot: 26, dur: 9, delay: 1.6 },
+  { img: 'pineapple_bottle.png', top: 78, left: 22, size: 60, rot: -10, dur: 7.2, delay: 0.9 },
+  { img: 'paneer_bottle.png', top: 8, left: 60, size: 52, rot: 12, dur: 8.4, delay: 1.3 },
+]
 
 export default function NotFound() {
   return (
@@ -36,7 +49,7 @@ export default function NotFound() {
           'radial-gradient(ellipse 80% 60% at 50% 35%, #0d1b3e 0%, #0a0e1a 55%, #000 100%)',
       }}
     >
-      {/* Rising fizz bubbles */}
+      {/* Rising fizz bubbles — colourful */}
       {BUBBLES.map((b, i) => (
         <span
           key={i}
@@ -48,12 +61,37 @@ export default function NotFound() {
             width: b.size,
             height: b.size,
             borderRadius: '50%',
-            border: '1px solid rgba(136,170,255,0.4)',
-            boxShadow: 'inset 1px 1px 2px rgba(255,255,255,0.25)',
+            border: `1px solid rgba(${b.tint},0.5)`,
+            boxShadow: `inset 1px 1px 2px rgba(255,255,255,0.3), 0 0 6px rgba(${b.tint},0.3)`,
             animation: `four-oh-four-bubble ${b.dur}s ease-in ${b.delay}s infinite`,
             pointerEvents: 'none',
           }}
         />
+      ))}
+
+      {/* Floating flavour bottles — the whole crew, hover to jiggle */}
+      {FLOATERS.map((f) => (
+        <div
+          key={f.img}
+          aria-hidden
+          className="floater-404"
+          style={{
+            position: 'absolute',
+            top: `${f.top}%`,
+            left: `${f.left}%`,
+            width: f.size,
+            height: f.size * 2.4,
+            ['--rot' as string]: `${f.rot}deg`,
+            transform: `rotate(${f.rot}deg)`,
+            opacity: 0.85,
+            filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.45))',
+            animationDuration: `${f.dur}s`,
+            animationDelay: `${f.delay}s`,
+            cursor: 'pointer',
+          }}
+        >
+          <Image src={`/nobg/${f.img}`} alt="" fill style={{ objectFit: 'contain' }} />
+        </div>
       ))}
 
       {/* Glow ring behind bottle */}
