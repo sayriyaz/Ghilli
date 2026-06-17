@@ -98,22 +98,41 @@ button {
   animation-name: four-oh-four-float;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
-  transition: opacity 0.2s ease, filter 0.2s ease;
+  transition: opacity 0.2s ease;
+  /* Hint the compositor: these animate transform/translate continuously */
+  will-change: transform, translate;
 }
-.floater-404:hover {
-  opacity: 1;
-  filter: drop-shadow(0 16px 30px rgba(212, 175, 55, 0.4));
-  animation-name: four-oh-four-jiggle;
-  animation-duration: 0.45s !important;
-  animation-delay: 0s !important;
-  animation-timing-function: ease-in-out;
+
+/* Only real pointers get hover — touch taps shouldn't false-trigger the jiggle */
+@media (hover: hover) and (pointer: fine) {
+  .floater-404:hover {
+    opacity: 1;
+    animation-name: four-oh-four-jiggle;
+    animation-duration: 0.42s !important;
+    animation-delay: 0s !important;
+    /* Snappy, springy shake (strong ease-out so it reacts instantly to the poke) */
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  }
 }
 
 @keyframes four-oh-four-jiggle {
-  0%, 100% { transform: rotate(var(--rot, 0deg)); }
-  20% { transform: rotate(calc(var(--rot, 0deg) - 12deg)) scale(1.12); }
-  45% { transform: rotate(calc(var(--rot, 0deg) + 10deg)) scale(1.12); }
-  70% { transform: rotate(calc(var(--rot, 0deg) - 6deg)) scale(1.08); }
+  0% { transform: rotate(var(--rot, 0deg)) scale(1); }
+  25% { transform: rotate(calc(var(--rot, 0deg) - 12deg)) scale(1.12); }
+  55% { transform: rotate(calc(var(--rot, 0deg) + 9deg)) scale(1.1); }
+  80% { transform: rotate(calc(var(--rot, 0deg) - 4deg)) scale(1.05); }
+  100% { transform: rotate(var(--rot, 0deg)) scale(1); }
+}
+
+/* Respect reduced-motion: kill the looping movement, keep the scene legible */
+@media (prefers-reduced-motion: reduce) {
+  .floater-404,
+  .four-oh-four-bottle,
+  .fizz-404 {
+    animation: none !important;
+    translate: none !important;
+  }
+  /* Bubbles would sit stacked at the bottom with no motion — just hide them */
+  .fizz-404 { opacity: 0 !important; }
 }
 
 .gradient-gold {

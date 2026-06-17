@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 // Stable bubble positions (no hydration mismatch) — lots of fizz
 const BUBBLE_TINTS = ['136,170,255', '68,221,102', '255,134,28', '255,68,102', '246,189,24', '222,219,53']
-const BUBBLES = Array.from({ length: 40 }, (_, i) => {
+const BUBBLES = Array.from({ length: 28 }, (_, i) => {
   const s = Math.sin(i * 99.7 + 12.3) * 43758.5
   const r = (n: number) => Math.abs(Math.sin(s + n))
   return {
@@ -49,11 +49,12 @@ export default function NotFound() {
           'radial-gradient(ellipse 80% 60% at 50% 35%, #0d1b3e 0%, #0a0e1a 55%, #000 100%)',
       }}
     >
-      {/* Rising fizz bubbles — colourful */}
+      {/* Rising fizz bubbles — colourful, constant rise = linear easing */}
       {BUBBLES.map((b, i) => (
         <span
           key={i}
           aria-hidden
+          className="fizz-404"
           style={{
             position: 'absolute',
             bottom: -30,
@@ -63,7 +64,7 @@ export default function NotFound() {
             borderRadius: '50%',
             border: `1px solid rgba(${b.tint},0.5)`,
             boxShadow: `inset 1px 1px 2px rgba(255,255,255,0.3), 0 0 6px rgba(${b.tint},0.3)`,
-            animation: `four-oh-four-bubble ${b.dur}s ease-in ${b.delay}s infinite`,
+            animation: `four-oh-four-bubble ${b.dur}s linear ${b.delay}s infinite`,
             pointerEvents: 'none',
           }}
         />
@@ -111,6 +112,7 @@ export default function NotFound() {
 
       {/* Tilted "tipped over" bottle */}
       <div
+        className="four-oh-four-bottle"
         style={{
           position: 'relative',
           width: 120,
@@ -119,6 +121,7 @@ export default function NotFound() {
           transform: 'rotate(-18deg)',
           filter: 'drop-shadow(0 24px 40px rgba(0,0,0,0.5))',
           animation: 'four-oh-four-wobble 4s ease-in-out infinite',
+          willChange: 'transform',
         }}
       >
         <Image
